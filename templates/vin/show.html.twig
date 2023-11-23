@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vin{% endblock %}
+
+{% block body %}
+    <h1>Vin</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vin.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ vin.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ vin.prix }}</td>
+            </tr>
+            <tr>
+                <th>Quantitestock</th>
+                <td>{{ vin.quantitestock }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ vin.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vin_index') }}">back to list</a>
+
+    <a href="{{ path('app_vin_edit', {'id': vin.id}) }}">edit</a>
+
+    {{ include('vin/_delete_form.html.twig') }}
+{% endblock %}
