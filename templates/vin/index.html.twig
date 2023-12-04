@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vin index{% endblock %}
+{% block title %}Vin Admin{% endblock %}
 
 {% block body %}
-    <h1>Vin index</h1>
+    <h1>Liste des vins</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+
                 <th>Nom</th>
                 <th>Prix</th>
                 <th>Quantitestock</th>
@@ -19,14 +19,14 @@
         <tbody>
         {% for vin in vins %}
             <tr>
-                <td>{{ vin.id }}</td>
+
                 <td>{{ vin.nom }}</td>
                 <td>{{ vin.prix }}</td>
                 <td>{{ vin.quantitestock }}</td>
                 <td>{{ vin.description }}</td>
                 <td>
                     <a href="{{ path('app_vin_show', {'id': vin.id}) }}">show</a>
-                    <a href="{{ path('app_vin_edit', {'id': vin.id}) }}">edit</a>
+
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_vin_new') }}">Create new</a>
 {% endblock %}
