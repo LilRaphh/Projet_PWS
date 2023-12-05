@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+    <head>
+        <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}" />
+    </head>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block accueil %}
+ <div class="accueil">
+            <img class="vigne-page-accueil" src="{{ asset('assets/images/vigne-page-daccueil.png')}}" />
+            <img class="rectangle" src="{{ asset('assets/images/Rectangle-2.png')}}" />
+ </div>  
+{% endblock %}

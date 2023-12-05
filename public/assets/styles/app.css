@@ -12,32 +12,33 @@
     height: 2092px;
     position: relative;
   }
-  .accueil {
-    position: relative;
-}
-  .accueil .vigne-page-accueil {
-    position: absolute;
-    width: 100vw; 
-    max-width: 1540px;
-    height: 381px;
-    top: 290px;
-    left: -8px;
-    z-index: 1; 
+  
+  .base .overlap-group {
+    width: 1440px;
+    height: 631px;
+    top: 0;
+    left: 0;
   }
   
-  .accueil .rectangle {
+  .base .vigne-page-accueil {
     position: absolute;
-    width: 100vw; 
-    max-width: 1540px;
+    width: 1440px;
     height: 381px;
-    top: 290px;
+    top: 250px;
+    left: 0;
     object-fit: cover;
-    left: -8px;
-    z-index: 2; 
   }
   
-  .accueil .histoire {
+  .base .rectangle {
     position: absolute;
+    width: 1440px;
+    height: 381px;
+    top: 250px;
+    left: 0;
+  }
+  
+  .base .histoire {
+    position: relative;
     width: 227px;
     height: 64px;
     top: 518px;
@@ -65,10 +66,10 @@
   
   .base .header {
     position: absolute;
-    width: 100vw; 
-    max-width: 1540px;
+    width: 1440px;
     height: 135px;
     top: 169px;
+    left: 0;
     background-color: #d7d7d7;
   }
   
@@ -113,12 +114,13 @@
     position: absolute;
     height: 21px;
     top: 12px;
-    left: 35px;
+    left: 25px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 600;
     color: #ffffff;
     font-size: 16px;
     text-align: center;
+    letter-spacing: 0;
     line-height: 20.8px;
     white-space: nowrap;
   }
@@ -175,7 +177,7 @@
     white-space: nowrap;
   }
   
-  .base .histoire-bouton {
+  .base .div-wrapper {
     position: absolute;
     width: 126px;
     height: 48px;
@@ -226,31 +228,6 @@
     line-height: 20.8px;
     white-space: nowrap;
   }
-  .base .connection-bouton{
-    position: absolute;
-    width: 126px;
-    height: 48px;
-    top: 33px;
-    left: 1300px;
-    background-color: #426b1f;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .base .text-connection {
-    position: absolute;
-    height: 21px;
-    top: 12px;
-    left: 34px;
-    font-family: "Inter-Bold", Helvetica;
-    font-weight: 700;
-    color: #ffffff;
-    font-size: 16px;
-    text-align: center;
-    letter-spacing: 0;
-    line-height: 20.8px;
-    white-space: nowrap;
-  }
   
   .base .logo-wine-celler {
     position: absolute;
@@ -275,18 +252,4 @@
     line-height: 128px;
     white-space: nowrap;
   }
-
-  .fleche {
-    position: relative; 
-    height: 3500px; 
-    width: 100vw; 
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    padding-top: 500px;
-}
-
-.histoire .fleche {
-    max-width: 100%; 
-}
 

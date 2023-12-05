@@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
+{% block head %}
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}" />   
+        
+{% endblock %}
+{% block stylesheets %}
+     {{ encore_entry_link_tags('app') }}
+{% endblock %}
 
+    <div class="base">
+            <header class="header">
+            <a href="http://127.0.0.1:8000/histoire" class="nous-retrouver"><div class="text-wrapper-2">Nous Retrouver</div></a>
+              <boutton class="panier"><div class="text-wrapper-3">Panier</div></boutton>
+              <boutton class="rejoignez-nous"><div class="text-wrapper-4">Rejoignez-nous</div></boutton>
+            <a href="{{path('app_vin_index')}}" class="nos-vins"><div class="text-wrapper-5">Nos Vins</div></a>
+              <boutton class="histoire-bouton"><div class="text-wrapper-6">Histoire</div></boutton>
+              <boutton class="accueil"><div class="text-wrapper-7">Accueil</div></bouton>
+            </header>
+            <img class="logo-wine-celler" src="{{ asset('assets/images/logo.png')}}" /> 
+          <div class="text-wrapper-8">Wine Celler</div>
+        {% if app.user %}
+            <h1> {{app.user.nom}} </h1> 
+        {% else %}
+            On se connait ? <a href="{{path('app_login')}}"> se connecter </a>
+        {% endif %}
+        <boutton class="connection-bouton"><div class="text-connection">login</div></boutton>
+        <button onclick="window.location.href = 'http://127.0.0.1:8000/histoire';">Cliquez Ici</button>
+
+    </div>  
+
+    {% block accueil %}
+    <div class="accueil">
+    </div>  
+    {% endblock %}
+    {% block fleche %}
+    
+    {% endblock %}
+
+
+
+
+
+
+<<<<<<< Updated upstream
         {% block javascripts %}
         {% endblock %}
     </head>
@@ -23,4 +60,8 @@
     </p>
         {% block body %}{% endblock %}
     </body>
+=======
+
+
+>>>>>>> Stashed changes
 </html>
