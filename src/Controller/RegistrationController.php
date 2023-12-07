@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Panier;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
@@ -44,10 +45,11 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager->persist($user);
-            // // Create a new Panier for the user
-            // $panier = new Panier();
-            // $panier->setUser($user); // Assuming you have a setUser method in your Panier entity
-            // $entityManager->persist($panier);
+            // Create a new Panier for the user
+            $panier = new Panier();
+            $panier->setUser($user); // Assuming you have a setUser method in your Panier entity
+            $entityManager->persist($panier);
+            $user ->setPanier($panier);
 
             $entityManager->flush();
 

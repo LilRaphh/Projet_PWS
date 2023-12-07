@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VinRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VinRepository::class)]
@@ -24,6 +26,14 @@ class Vin
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
+
+    #[ORM\ManyToMany(targetEntity: Panier::class, mappedBy: 'Vin')]
+    private Collection $paniers;
+
+    public function __construct()
+    {
+        $this->paniers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +84,33 @@ class Vin
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): static
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->addVin($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): static
+    {
+        if ($this->paniers->removeElement($panier)) {
+            $panier->removeVin($this);
+        }
 
         return $this;
     }
