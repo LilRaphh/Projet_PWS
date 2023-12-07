@@ -26,7 +26,7 @@
                 <td>{{ vin.description }}</td>
                 <td>
                     <a href="{{ path('app_vin_show', {'id': vin.id}) }}">show</a>
-
+                    <a href="{{ path('app_vin_ajouterPanier', {'id': vin.id}) }}">Ajouter au Panier</a>
                 </td>
             </tr>
         {% else %}

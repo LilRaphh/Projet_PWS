@@ -16,9 +16,11 @@
             {% if app.user %}
 
             Bonjour {{ app.user.nom }} - <a href="{{ path('app_user_profile') }}">Modifier mon profil</a> - <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            <br>
+            {% if is_granted('ROLE_ADMIN') %}         <a href="{{path('admin')}}">passer en mode admin</a>                  {% endif %}
             
             {% else %}
-                On se connaît ? <a href="{{ path('app_login') }}">Se connecter</a>
+                On se connaît ? <a href="{{ path('app_login') }}">Se connecter</a> 
 
             {% endif %}
             
@@ -26,3 +28,4 @@
         {% block body %}{% endblock %}
     </body>
 </html>
+
