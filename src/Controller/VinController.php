@@ -69,6 +69,8 @@ class VinController extends AbstractController
         $panier = $user->getPanier();
 
         $panier -> addVin($vin);
+        $vinquantite = $vin->getQuantitestock($vin);
+        $vin->setQuantitestock($vinquantite-1);
         $entityManager->persist($panier);
         $entityManager->flush();
         return $this->render('panier/show.html.twig', [
@@ -82,6 +84,8 @@ class VinController extends AbstractController
         $user = $this->security->getUser();
         $panier = $user->getPanier();
         $panier -> removeVin($vin);
+        $vinquantite = $vin->getQuantitestock($vin);
+        $vin->setQuantitestock($vinquantite+1);
 
         $entityManager->persist($panier);
         $entityManager->flush();

@@ -45,7 +45,6 @@ class Panier
         if (!$this->Vin->contains($vin)) {
             $this->Vin->add($vin);
         }
-
         return $this;
     }
 
