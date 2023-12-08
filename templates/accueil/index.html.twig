@@ -3,6 +3,8 @@
 {% block head %}
     <head>
         <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}" />
+        <script src="assets/app.js"> </script>
+
     </head>
 {% endblock %}
 {% block stylesheets %}
@@ -15,4 +17,11 @@
             <img class="vigne-page-accueil" src="{{ asset('assets/images/vigne-page-daccueil.png')}}" />
             <img class="rectangle" src="{{ asset('assets/images/Rectangle-2.png')}}" />
  </div>  
+{% endblock %}
+{% block body %}
+<div id="slider">
+        <img class="bouteille" src="{{ asset('assets/images/bouteille1.png')}}" /> 
+        <div id="precedent" onclick="ChangeSlide(-1)">&lt</div>
+        <div id="suivant" onclick="ChangeSlide(1)">&gt</div>
+    </div>
 {% endblock %}

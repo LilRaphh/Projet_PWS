@@ -4,42 +4,58 @@
 {% block head %}
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}" />   
-        
+        <script src="app.js"></script>
+
+            
 {% endblock %}
 {% block stylesheets %}
      {{ encore_entry_link_tags('app') }}
 {% endblock %}
 
-    <div class="base">
-            <header class="header">
+<div class="base">
+        <header class="header">
             <a class="nous-retrouver" href="http://127.0.0.1:8000/nousretrouver" ><div class="text-wrapper-2">Nous Retrouver</div></a>
             <a class="panier" href="http://127.0.0.1:8000/histoire" ><div class="text-wrapper-3">Panier</div></a>
             <a class="rejoignez-nous" href="http://127.0.0.1:8000/rejoignez_nous" ><div class="text-wrapper-4">Rejoignez-nous</div></a>
             <a class="nos-vins" href="http://127.0.0.1:8000/vin" ><div class="text-wrapper-4">Nos-vin</div></a>
             <a class="histoire-bouton" href="http://127.0.0.1:8000/histoire" ><div class="text-wrapper-5">Histoire</div></a>
             <a class="accueil" href="http://127.0.0.1:8000/accueil" ><div class="text-wrapper-6">Accueil</div></a>
-            </header>
+        </header>
             <img class="logo-wine-celler" src="{{ asset('assets/images/logo.png')}}" /> 
           <div class="text-wrapper-8">Wine Celler</div>
-        <div class="login">
-        {% if app.user %}
-        Bonjour {{ app.user.nom }} - 
-            <a href="{{ path('app_user_profile') }}" class="connection-bouton"><div class="text-wrapper-4">Modifier mon profil</div></a> - 
-            <a href="{{ path('app_logout') }}" class="connection-bouton"><div class="text-wrapper-4">Se déconnecter</div></a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="connection-bouton"><div class="text-wrapper-4">Se connecter</div></a>
-        {% endif %}
-        </div>
-
+        
+    
         <div class="search-container">
-            <form action="/path_to_search" method="get">
-                <input type="text" placeholder="Rechercher..." name="search">
+            <form action="/vin" method="get" onsubmit="return openPage();">
+                <input type="text" placeholder="Rechercher..." name="search" id="search">
                 <button type="submit">Rechercher</button>
             </form>
         </div>
+        <script>
+            function redirectToSearchPage() {
+                var wineName = document.getElementById("wineName").value;
 
-        </div> 
-    </div>  
+                if (wineName.trim() !== "") {
+                    window.location.href = "/vin/" + encodeURIComponent(wineName);
+                } else {
+                    alert("Veuillez entrer un nom de vin.");
+                }
+
+                return false; 
+            }
+        </script>
+        <div class="login">
+                {% if app.user %}
+                Bonjour {{ app.user.nom }} - 
+                    <a href="{{ path('app_user_profile') }}" class="connection-bouton"><div class="text-wrapper-4">Modifier mon profil</div></a> - 
+                    <a href="{{ path('app_logout') }}" class="connection-bouton"><div class="text-wrapper-4">Se déconnecter</div></a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="connection-bouton"><div class="text-wrapper-4">Se connecter</div></a>
+                {% endif %}
+         </div> 
+</div>  
+
+    
 
     {% block accueil %}
     <div class="accueil">

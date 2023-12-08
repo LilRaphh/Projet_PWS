@@ -3,9 +3,15 @@
 {% block title %}Vin{% endblock %}
 
 {% block body %}
-    <h1>Vin</h1>
+<style>
 
+.table{margin-top:20%;}
+</style>
+
+
+        <h1>Vin</h1>
     <table class="table">
+
         <tbody>
             <tr>
                 <th>Id</th>
@@ -35,4 +41,5 @@
     <a href="{{ path('app_vin_edit', {'id': vin.id}) }}">edit</a>
 
     {{ include('vin/_delete_form.html.twig') }}
+
 {% endblock %}
