@@ -25,7 +25,6 @@ class VinController extends AbstractController
     }
 
 
-
     #[Route('/', name: 'app_vin_index', methods: ['GET'])]
     public function index(VinRepository $vinRepository): Response
     {
