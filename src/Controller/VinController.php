@@ -34,25 +34,6 @@ class VinController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_vin_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $vin = new Vin();
-        $form = $this->createForm(VinType::class, $vin);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($vin);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_vin_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('vin/new.html.twig', [
-            'vin' => $vin,
-            'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}', name: 'app_vin_show', methods: ['GET'])]
     public function show(Vin $vin): Response
@@ -69,6 +50,8 @@ class VinController extends AbstractController
         $panier = $user->getPanier();
 
         $panier -> addVin($vin);
+        $vinquantite = $vin->getQuantitestock($vin);
+        $vin->setQuantitestock($vinquantite-1);
         $entityManager->persist($panier);
         $entityManager->flush();
         return $this->render('panier/show.html.twig', [
@@ -76,19 +59,19 @@ class VinController extends AbstractController
         ]);
     }
 
-
-
-
-
-
-    #[Route('/{id}', name: 'app_vin_delete', methods: ['POST'])]
-    public function delete(Request $request, Vin $vin, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/supp', name:'app_vin_suppPanier', methods: ['GET'])]
+    public function supprimerPanierVin(Vin $vin, Request $request , EntityManagerInterface $entityManager): Response  
     {
-        if ($this->isCsrfTokenValid('delete'.$vin->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($vin);
-            $entityManager->flush();
-        }
+        $user = $this->security->getUser();
+        $panier = $user->getPanier();
+        $panier -> removeVin($vin);
+        $vinquantite = $vin->getQuantitestock($vin);
+        $vin->setQuantitestock($vinquantite+1);
 
-        return $this->redirectToRoute('app_vin_index', [], Response::HTTP_SEE_OTHER);
+        $entityManager->persist($panier);
+        $entityManager->flush();
+        return $this->render('panier/show.html.twig', [
+            'panier' => $panier,
+        ]);
     }
 }
