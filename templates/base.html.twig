@@ -11,10 +11,7 @@
         {% endblock %}
     </head>
     <body>
-        <h1><a href="{{path('app_vin_index')}}">Nos Vins</a></h1> 
-        {% if app.user %}
-            <h1><a href="{{path('app_panier_show', {'id': app.user.id})}}">Mon panier</a></h1>
-        {% endif %}
+        <h1><a href="path('app_vin_index')">Nos Vins</a></h1> <h1><a href="path('app_panier_index')">Votre Panier</a></h1>
         <p>
             {% if app.user %}
 

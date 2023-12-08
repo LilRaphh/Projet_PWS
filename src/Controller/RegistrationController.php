@@ -49,7 +49,6 @@ class RegistrationController extends AbstractController
             $panier = new Panier();
             $panier->setUser($user); // Assuming you have a setUser method in your Panier entity
             $entityManager->persist($panier);
-            $user ->setPanier($panier);
 
             $entityManager->flush();
 
