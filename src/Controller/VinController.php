@@ -79,23 +79,7 @@ class VinController extends AbstractController
 
 
 
-    #[Route('/{id}/edit', name: 'app_vin_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Vin $vin, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(VinType::class, $vin);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_vin_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('vin/edit.html.twig', [
-            'vin' => $vin,
-            'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}', name: 'app_vin_delete', methods: ['POST'])]
     public function delete(Request $request, Vin $vin, EntityManagerInterface $entityManager): Response

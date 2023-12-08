@@ -11,10 +11,10 @@
         {% endblock %}
     </head>
     <body>
-        <h1><a href="path('app_vin_index')">Nos Vins</a></h1> <h1><a href="path('app_panier_index')">Votre Panier</a></h1>
+        <h1><a href="{{path('app_vin_index')}}">Nos Vins</a></h1> 
         <p>
             {% if app.user %}
-
+            <h1><a href="{{path('app_panier_show', {'id': app.user.id})}}">Votre Panier</a></h1>
             Bonjour {{ app.user.nom }} - <a href="{{ path('app_user_profile') }}">Modifier mon profil</a> - <a href="{{ path('app_logout') }}">Se déconnecter</a>
             <br>
             {% if is_granted('ROLE_ADMIN') %}         <a href="{{path('admin')}}">passer en mode admin</a>                  {% endif %}

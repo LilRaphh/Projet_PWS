@@ -22,9 +22,22 @@
                 <td>{{ v.nom }}</td>
                 <td>{{v.prix}}</td>
                 <td>TODO</td>
+<<<<<<< Updated upstream
                 <td><button>supprimer</button></td>
                 <td><button>+1</button></td>
                 <td><button>-1</button></td>
+=======
+                <td>
+                    <a href="{{path('app_vin_suppPanier', {'id': v.id})}}">Supprimer</a>
+                    <button>+1</button>
+                    <button>-1</button>
+            </td>
+        </tr>    
+            {% else %}
+        <tr>
+            <td colspan="6">Vous n'avez pas de vin ?! <a href="{{path('app_vin_index')}}">nos vins</a></td>
+        </tr>
+>>>>>>> Stashed changes
                 {% endfor %}
         </tbody>
     </table>
