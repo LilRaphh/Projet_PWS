@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+
 {% block head %}
     <head>
         <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}" />
@@ -11,7 +12,13 @@
 {% endblock %}
 
 {% block fleche %}
-
+    <style>
+        body {
+            margin-top: 250px; 
+        }
+    </style>
+    <div class="histoire_fleche">
         <img class="fleche" src="{{ asset('assets/images/fleche2.png')}}" />
+    </div>
 
 {% endblock %}
