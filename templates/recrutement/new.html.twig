@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Recrutement{% endblock %}
+
+{% block body %}
+    <h1>Create new Recrutement</h1>
+
+     {{ form_start(form) }}
+    {# ... #}
+
+        {{ form_row(form.cv) }}
+        {{ form_row(form.lettremotiv) }}
+    {{ form_end(form) }}
+
+    {{ include('recrutement/_form.html.twig') }}
+
+    <a href="{{ path('app_recrutement_index') }}">back to list</a>
+{% endblock %}
