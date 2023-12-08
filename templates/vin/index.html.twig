@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-
+                <th>image</th>
                 <th>Nom</th>
                 <th>Prix</th>
                 <th>Quantitestock</th>
@@ -18,8 +18,8 @@
         </thead>
         <tbody>
         {% for vin in vins %}
-            <tr>
-
+            <tr>                               
+                <td><img class = "balek" src={{vin.imagesrc}}/></td>
                 <td>{{ vin.nom }}</td>
                 <td>{{ vin.prix }}</td>
                 <td>{{ vin.quantitestock }}</td>
@@ -35,6 +35,8 @@
             </tr>
         {% endfor %}
         </tbody>
+
+
     </table>
 
 {% endblock %}

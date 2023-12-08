@@ -30,6 +30,9 @@ class Vin
     #[ORM\ManyToMany(targetEntity: Panier::class, mappedBy: 'Vin')]
     private Collection $paniers;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagesrc = null;
+
     public function __construct()
     {
         $this->paniers = new ArrayCollection();
@@ -111,6 +114,18 @@ class Vin
         if ($this->paniers->removeElement($panier)) {
             $panier->removeVin($this);
         }
+
+        return $this;
+    }
+
+    public function getImagesrc(): ?string
+    {
+        return $this->imagesrc;
+    }
+
+    public function setImagesrc(?string $imagesrc): static
+    {
+        $this->imagesrc = $imagesrc;
 
         return $this;
     }

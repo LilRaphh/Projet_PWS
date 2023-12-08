@@ -9,15 +9,13 @@
         <tbody>            
             {% for v in panier.vin %}
             <tr>
-                <th>Id</th>
+                <th>Image</th>
                 <th>Vins </th>
                 <th>Prix</th>
                 <th>Quantité</th>
                 <th>Actions</th>
             </tr>
-
-
-                <td>{{ panier.id }}</td>
+                <td><img src={{ v.imagesrc }} ></td>
                 <td>{{ v.nom }}</td>
                 <td>{{v.prix}}</td>
                 <td>TODO</td>

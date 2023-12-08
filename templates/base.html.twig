@@ -11,7 +11,7 @@
         {% endblock %}
     </head>
     <body>
-        <h1><a href="{{path('app_vin_index')}}">Nos Vins</a></h1> <p> <form action=""></form> <input type="text"> <button type="submit" class="btn">rechercher</button> </form></p>   
+        <h1><a href="{{path('app_vin_index')}}">Nos Vins</a></h1> <p> <form action=""></form> <input type="text" id="nom" name="nom"> <button type="submit" class="btn">rechercher</button> </form></p>   
         <p>
             {% if app.user %}
             <h1><a href="{{path('app_panier_show', {'id': app.user.id})}}">Votre Panier</a></h1>
