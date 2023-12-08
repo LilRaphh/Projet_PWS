@@ -7,24 +7,31 @@
 
     <table class="table">
         <tbody>
+            
+            {% for v in panier.vin %}
             <tr>
-
                 <th>Id</th>
                 <th>Vins </th>
                 <th>Prix</th>
                 <th>Quantité</th>
                 <th>Actions</th>
             </tr>
-
-            {% for v in panier.vin %}
-
+        <tr>
                 <td>{{ panier.id }}</td>
                 <td>{{ v.nom }}</td>
                 <td>{{v.prix}}</td>
                 <td>TODO</td>
-                <td><button>supprimer</button></td>
-                <td><button>+1</button></td>
-                <td><button>-1</button></td>
+                <td>
+                    <a href="{{path('app_vin_suppPanier', {'id': v.id})}}">Supprimer</a>
+                    <button>+1</button>
+                    <button>-1</button>
+            </td>
+        </tr>    
+        <p><a href=""></a></p>
+            {% else %}
+        <tr>
+            <td colspan="6">Vous n'avez pas de vin ?!</td>
+        </tr>
                 {% endfor %}
         </tbody>
     </table>

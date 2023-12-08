@@ -76,6 +76,21 @@ class VinController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/supp', name:'app_vin_suppPanier', methods: ['GET'])]
+    public function supprimerPanierVin(Vin $vin, Request $request , EntityManagerInterface $entityManager): Response  
+    {
+        $user = $this->security->getUser();
+        $panier = $user->getPanier();
+        $panier -> removeVin($vin);
+
+        $entityManager->persist($panier);
+        $entityManager->flush();
+        return $this->render('panier/show.html.twig', [
+            'panier' => $panier,
+        ]);
+    }
+
+
 
 
 

@@ -16,6 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/panier')]
 class PanierController extends AbstractController
 {
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/', name: 'app_panier_index', methods: ['GET'])]
     public function index(PanierRepository $panierRepository): Response
     {
@@ -45,11 +50,13 @@ class PanierController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_panier_show', methods: ['GET'])]
-    public function show(Panier $panier, Security $security): Response
+    public function show(Panier $panier, EntityManagerInterface $entityManager): Response
     {
-        
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         $panier = $user->getPanier();
+
+        $entityManager->persist($panier);
+        $entityManager->flush();
         return $this->render('panier/show.html.twig', [
             'panier' => $panier,
         ]);
@@ -83,4 +90,5 @@ class PanierController extends AbstractController
 
         return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
