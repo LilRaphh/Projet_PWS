@@ -3,84 +3,93 @@
 namespace App\Controller;
 
 use App\Entity\Panier;
-use App\Form\PanierType;
-use App\Repository\PanierRepository;
-use App\Repository\UserRepository;
+use App\Entity\PanierQte;
+use App\Entity\Vin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/panier')]
 class PanierController extends AbstractController
 {
-    #[Route('/', name: 'app_panier_index', methods: ['GET'])]
-    public function index(PanierRepository $panierRepository): Response
+    #[Route('/', name: 'app_panier_show', methods: ['GET'])]
+    public function index(Security $security): Response
     {
-        return $this->render('panier/index.html.twig', [
-            'paniers' => $panierRepository->findAll(),
+        $user = $security->getUser();
+
+        return $this->render('panier/show.html.twig', [
+            'qtes' => $user->getPanier()->getPanierQtes(),
         ]);
     }
 
-    #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/add/{id}', name: 'app_panier_add', methods: ['GET', 'POST'])]
+    public function ajouterAuPanier(Security $security, Vin $vin, EntityManagerInterface $entityManager): Response
     {
-        $panier = new Panier();
-        $form = $this->createForm(PanierType::class, $panier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($panier);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('panier/new.html.twig', [
-            'panier' => $panier,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_panier_show', methods: ['GET'])]
-    public function show(Panier $panier, Security $security): Response
-    {
-        
         $user = $security->getUser();
         $panier = $user->getPanier();
-        return $this->render('panier/show.html.twig', [
-            'panier' => $panier,
-        ]);
-    }
 
-    #[Route('/{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Panier $panier, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(PanierType::class, $panier);
-        $form->handleRequest($request);
+        if (!$panier->hasPanierQte($vin)) {
+            $panierQte = new PanierQte();
+            $panierQte->setPanier($panier);
+            $panierQte->setVin($vin);
+            $panierQte->setQuantite(1);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $vin->setQuantitestock($vin->getQuantitestock() - 1);
+            $panier->addPanierQte($panierQte);
+            $entityManager->persist($panier);
+        } else {
+            $panierQte = $panier->getPanierQte($vin);
 
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
+            $panierQte->setQuantite($panierQte->getQuantite() + 1);
+            $vin->setQuantitestock($vin->getQuantitestock() - 1);
         }
 
-        return $this->render('panier/edit.html.twig', [
-            'panier' => $panier,
-            'form' => $form,
-        ]);
+        $entityManager->persist($vin);
+        $entityManager->persist($panierQte);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_panier_show', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}', name: 'app_panier_delete', methods: ['POST'])]
-    public function delete(Request $request, Panier $panier, EntityManagerInterface $entityManager): Response
+    #[Route('/remove/{id}', name: 'app_panier_remove', methods: ['GET', 'POST'])]
+    public function retirerDuPanier(Security $security, Vin $vin, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$panier->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($panier);
-            $entityManager->flush();
+        $user = $security->getUser();
+        $panier = $user->getPanier();
+        $panierQte = $panier->getPanierQte($vin);
+
+        if ($panierQte->getQuantite() == 1) {
+            return $this->redirectToRoute('app_panier_delete', ['id' => $vin->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
+        $panierQte->setQuantite($panierQte->getQuantite() - 1);
+        $vin->setQuantitestock($vin->getQuantitestock() + 1);
+
+        $entityManager->persist($vin);
+        $entityManager->persist($panierQte);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_panier_show', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/delete/{id}', name: 'app_panier_delete', methods: ['GET', 'POST'])]
+    public function supprimerDuPanier(Security $security, Vin $vin, EntityManagerInterface $entityManager): Response
+    {
+        $user = $security->getUser();
+        $panier = $user->getPanier();
+
+        $panierQte = $panier->getPanierQte($vin);
+        $vin->setQuantitestock($vin->getQuantitestock() + $panierQte->getQuantite());
+        $panier->removePanierQte($panierQte);
+
+
+        $entityManager->persist($panier);
+        $entityManager->persist($vin);
+        $entityManager->remove($panierQte);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_panier_show', [], Response::HTTP_SEE_OTHER);
     }
 }

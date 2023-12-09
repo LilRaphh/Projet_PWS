@@ -42,35 +42,4 @@ class VinController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/add', name: 'app_vin_ajouterPanier', methods: ['GET'])]
-    public function ajouterPanier(Vin $vin, Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->security->getUser();
-        $panier = $user->getPanier();
-
-        $panier -> addVin($vin);
-        $vinquantite = $vin->getQuantitestock($vin);
-        $vin->setQuantitestock($vinquantite-1);
-        $entityManager->persist($panier);
-        $entityManager->flush();
-        return $this->render('panier/show.html.twig', [
-            'panier' => $panier,
-        ]);
-    }
-
-    #[Route('/{id}/supp', name:'app_vin_suppPanier', methods: ['GET'])]
-    public function supprimerPanierVin(Vin $vin, Request $request , EntityManagerInterface $entityManager): Response  
-    {
-        $user = $this->security->getUser();
-        $panier = $user->getPanier();
-        $panier -> removeVin($vin);
-        $vinquantite = $vin->getQuantitestock($vin);
-        $vin->setQuantitestock($vinquantite+1);
-
-        $entityManager->persist($panier);
-        $entityManager->flush();
-        return $this->render('panier/show.html.twig', [
-            'panier' => $panier,
-        ]);
-    }
 }

@@ -15,45 +15,21 @@ class Panier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Vin::class, inversedBy: 'paniers')]
-    private Collection $Vin;
-
     #[ORM\OneToOne(inversedBy: 'panier', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $User = null;
 
+    #[ORM\OneToMany(mappedBy: 'panier', targetEntity: PanierQte::class)]
+    private Collection $panierQtes;
+
     public function __construct()
     {
-        $this->Vin = new ArrayCollection();
+        $this->panierQtes = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Vin>
-     */
-    public function getVin(): Collection
-    {
-        return $this->Vin;
-    }
-
-    public function addVin(Vin $vin): static
-    {
-        if (!$this->Vin->contains($vin)) {
-            $this->Vin->add($vin);
-        }
-
-        return $this;
-    }
-
-    public function removeVin(Vin $vin): static
-    {
-        $this->Vin->removeElement($vin);
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -67,4 +43,55 @@ class Panier
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, PanierQte>
+     */
+    public function getPanierQtes(): Collection
+    {
+        return $this->panierQtes;
+    }
+
+    public function hasPanierQte(Vin $vin): bool {
+        foreach ($this->panierQtes as $pQte) {
+            if ($pQte->getVin() == $vin) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getPanierQte(Vin $vin): ?PanierQte {
+        foreach ($this->panierQtes as $pQte) {
+            if ($pQte->getVin() == $vin) {
+                return $pQte;
+            }
+        }
+
+        return null;
+    }
+
+    public function addPanierQte(PanierQte $panierQte): static
+    {
+        if (!$this->panierQtes->contains($panierQte)) {
+            $this->panierQtes->add($panierQte);
+            $panierQte->setPanier($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierQte(PanierQte $panierQte): static
+    {
+        if ($this->panierQtes->removeElement($panierQte)) {
+            // set the owning side to null (unless already changed)
+            if ($panierQte->getPanier() === $this) {
+                $panierQte->setPanier(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

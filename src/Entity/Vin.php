@@ -6,8 +6,11 @@ use App\Repository\VinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: VinRepository::class)]
+#[Vich\Uploadable]
 class Vin
 {
     #[ORM\Id]
@@ -27,15 +30,25 @@ class Vin
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: Panier::class, mappedBy: 'Vin')]
-    private Collection $paniers;
-
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagesrc = null;
+    private ?string $vinImageName = null;
+
+    #[Vich\UploadableField(mapping: 'vins', fileNameProperty: 'vinImageName', size: 'imageVinSize')]
+    private ?File $vinImageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageVinSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'vin', targetEntity: PanierQte::class)]
+    private Collection $panierQtes;
 
     public function __construct()
     {
-        $this->paniers = new ArrayCollection();
+        $this->panierQuantites = new ArrayCollection();
+        $this->panierQtes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,42 +104,72 @@ class Vin
         return $this;
     }
 
+    public function getVinImageName(): ?string
+    {
+        return $this->vinImageName;
+    }
+
+    public function setVinImageName(?string $imgUrl): static
+    {
+        $this->vinImageName = $imgUrl;
+
+        return $this;
+    }
+
+    public function getVinImageFile(): ?File
+    {
+        return $this->vinImageFile;
+    }
+
+    public function setVinImageFile(?File $vinImageFile = null): void
+    {
+        $this->vinImageFile = $vinImageFile;
+
+        if (null !== $vinImageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageVinSize(): ?int
+    {
+        return $this->imageVinSize;
+    }
+
+    public function setImageVinSize(?int $imageVinSize): void
+    {
+        $this->imageVinSize = $imageVinSize;
+    }
+
     /**
-     * @return Collection<int, Panier>
+     * @return Collection<int, PanierQte>
      */
-    public function getPaniers(): Collection
+    public function getPanierQtes(): Collection
     {
-        return $this->paniers;
+        return $this->panierQtes;
     }
 
-    public function addPanier(Panier $panier): static
+    public function addPanierQte(PanierQte $panierQte): static
     {
-        if (!$this->paniers->contains($panier)) {
-            $this->paniers->add($panier);
-            $panier->addVin($this);
+        if (!$this->panierQtes->contains($panierQte)) {
+            $this->panierQtes->add($panierQte);
+            $panierQte->setVin($this);
         }
 
         return $this;
     }
 
-    public function removePanier(Panier $panier): static
+    public function removePanierQte(PanierQte $panierQte): static
     {
-        if ($this->paniers->removeElement($panier)) {
-            $panier->removeVin($this);
+        if ($this->panierQtes->removeElement($panierQte)) {
+            // set the owning side to null (unless already changed)
+            if ($panierQte->getVin() === $this) {
+                $panierQte->setVin(null);
+            }
         }
 
         return $this;
     }
 
-    public function getImagesrc(): ?string
-    {
-        return $this->imagesrc;
-    }
-
-    public function setImagesrc(?string $imagesrc): static
-    {
-        $this->imagesrc = $imagesrc;
-
-        return $this;
-    }
 }

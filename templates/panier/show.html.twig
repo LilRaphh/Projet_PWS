@@ -3,34 +3,34 @@
 {% block title %}Panier{% endblock %}
 
 {% block body %}
-    <h1>Panier</h1>
+    <div class="flex flex-col items-center justify-center gap-4">
+        <h1 class="text-3xl font-semibold">Panier</h1>
 
-    <table class="table">
-        <tbody>            
-            {% for v in panier.vin %}
-            <tr>
-                <th>Image</th>
-                <th>Vins </th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Actions</th>
-            </tr>
-                <td><img src={{ v.imagesrc }} ></td>
-                <td>{{ v.nom }}</td>
-                <td>{{v.prix}}</td>
-                <td>TODO</td>
-                <td>
-                    <a href="{{path('app_vin_suppPanier', {'id': v.id})}}">Supprimer</a>
-                    <button>+1</button>
-                    <button>-1</button>
-            </td>
-        </tr>    
-            {% else %}
-        <tr>
-            <td colspan="6">Vous n'avez pas de vin ?! <a href="{{path('app_vin_index')}}">nos vins</a></td>
-        </tr>
-                {% endfor %}
-        </tbody>
-    </table>
+        {% for q in qtes %}
+            <div class="flex border-2 w-1/2 h-auto rounded-lg p-3 justify-between items-center">
+                <span>{{ q.vin.nom }}</span>
+                <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg" data-hs-input-number>
+                    <div class="flex items-center gap-x-1.5">
+                        <a href="{{ path('app_panier_remove', {'id' : q.vin.id}) }}" type="button" class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-input-number-decrement>
+                            <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+                        </a>
+                        <p class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center cursor-default">{{ q.quantite }}</p>
 
+                        {% if q.vin.quantitestock == 0 %}
+                            <a type="button" class="bg-gray-100 opacity-40 w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 text-gray-800 shadow-sm disabled:opacity-50 disabled:pointer-events-none" data-hs-input-number-increment>
+                                <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_panier_add', {'id' : q.vin.id}) }}" type="button" class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-input-number-increment>
+                                <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <p>{{q.vin.prix}}€</p>
+                <a href="{{ path('app_panier_delete', {'id' : q.vin.id}) }}">Supprimer</a>
+            </div>
+        {% endfor %}
+
+    </div>
 {% endblock %}
