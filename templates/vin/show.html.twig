@@ -16,6 +16,7 @@
                 <p></p>
                 <span class="text-xl">Quantité en stock: {{vin.QuantiteStock}}</span>
                 <p>{{ vin.description | raw }}</p>
+                <br>
             </div>
             {% if app.user %}
             {% if vin.quantitestock == 0 %}

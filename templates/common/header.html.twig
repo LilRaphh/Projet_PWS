@@ -34,7 +34,7 @@
         <div class="hidden lg:flex gap-8">
 
             {% if app.user %}
-            Bonjour {{app.user.nom}}
+            Bonjour {{app.user.prenom}} {{app.user.nom}}
                 <a href="{{path('app_user_edit', {'id': app.user.id})}}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out"> Modifier Profil</a>
                 <a href="{{ path('app_logout') }}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out">Se déconnecter</a>
             {% else %}
