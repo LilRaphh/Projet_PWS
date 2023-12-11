@@ -1,4 +1,19 @@
 <!DOCTYPE html>
+<style>footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  header{
+    position: relative;
+    top: 0;
+    width: 100%;
+  }  
+  .Image-acceuil{
+            width: 100%;
+            height: auto; 
+        }
+  </style>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,7 +31,14 @@
 {% include 'common/header.html.twig' %}
 <div class="body">
     {% block body %}
+    <img src="/images/vins/acceuil.png" class="Image-acceuil">
+
     {% endblock %}
 </div>
+
+
 </body>
+ <footer>
+    {% include 'common/footer.html.twig' %}
+ </footer>
 </html>

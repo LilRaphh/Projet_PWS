@@ -11,10 +11,21 @@
     });
 </script>
 
+<style>
+    .image-top-left{
+        width: 3%; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        }
+</style>
+
 <header class="h-16 w-full bg-gray-800 ">
     <nav class="text-white flex justify-between items-center h-full mx-16">
-        <a href="{{ path('app_accueil') }}" class="text-2xl font-bold">Acceuil</a>
+        <img src="/images/vins/logo.png" class="image-top-left">
+        <a href="{{ path('app_accueil') }}" class="text-2xl font-bold">Accueil</a>
         <div class="hidden lg:flex gap-8">
+            {% if is_granted('ROLE_ADMIN') %}         <a href="{{path('admin')}}">mode admin</a>                  {% endif %}
             <a href="{{ path('app_vin_index') }}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out">Nos Vins</a>
             {% if app.user %}
             <a href="{{ path('app_panier_show') }}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out">Votre Panier</a>
@@ -23,6 +34,7 @@
         <div class="hidden lg:flex gap-8">
 
             {% if app.user %}
+            Bonjour {{app.user.nom}}
                 <a href="{{path('app_user_edit', {'id': app.user.id})}}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out"> Modifier Profil</a>
                 <a href="{{ path('app_logout') }}" class="hover:text-blue-700 hover:text-xl duration-500 ease-in-out">Se déconnecter</a>
             {% else %}
@@ -68,4 +80,7 @@
             </div>
         </div>
     </div>
+    <div>
+
+</div>
 </header>
